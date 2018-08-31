@@ -12,7 +12,7 @@ TO RUN:
   - A notification will pop up, 'Unlinked Gradle Project'. Click it and be sure to check the 'Use auto-import' selection.
   - The project will build. 
 - In MAMP, press the 'Start Servers' button.
-  - Back in IntelliJ, in the Gradle side pane, under 'Tasks' -> 'Application' -> double click 'bootRun'.
+- Back in IntelliJ, in the Gradle side pane, under 'Tasks' -> 'Application' -> double click 'bootRun'.
   - Application is live at http://localhost:8080/play
 
 TO PLAY:
