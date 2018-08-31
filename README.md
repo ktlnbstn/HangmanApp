@@ -5,11 +5,10 @@ This application creates a Hangman game.
 TO RUN:
 - Open this [link](https://github.com/ktlnbstn/HangmanApp) to my HangManApp GitHub Repository.
 - Please download the ZIP file. Next, unzip the download.
-- Please follow the "Cloning an Existing Repository" instructions [here](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository).
 - Please download/install [IntelliJ](https://www.jetbrains.com/idea/download/) if necessary.
 - Please download/install [MAMP](https://www.mamp.info/en/downloads/) if necessary.
 - Open both programs.
-- In IntelliJ, press 'Import project'. Navigate to where you downloaded the HangManApp repository and choose it.
+- In IntelliJ, press 'Import project'. Navigate to where you downloaded the HangmanApp repository and choose it.
   - Next, choose 'Create project from existing sources'. Accept all default settings and click 'Finish'.
   - A notification will pop up, 'Unlinked Gradle Project'. Click it and be sure to check the 'Use auto-import' selection.
   - The project will build. 
