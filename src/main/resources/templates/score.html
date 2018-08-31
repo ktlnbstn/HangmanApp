@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+
+<center><h1 th:text="${title}" style="padding-top:100px">Default Title</h1></center>
+
+<div th:replace="fragments :: page-header"></div>
+
+<form th:object="${game}" th:action="@{/score}"
+      modelAttribute="game" method="post" style="max-width:600px;">
+
+    <h3 >
+        <label>Your Score: </label>
+        <label th:for="score" th:field="*{score}" th:text="${game.score}"></label>
+    </h3>
+
+<div class="form-group">
+
+    <div>
+        <label>Player Name: </label>
+        <label th:for="playerName" th:field="*{playerName}" th:text="${game.playerName}"></label>
+    </div>
+
+    <div>
+        <label>Difficulty Level: </label>
+        <label th:for="difficulty" th:field="*{difficulty}" th:text="${game.difficulty}"></label>
+    </div>
+
+    <div>
+        <label>Word: </label>
+        <label th:for="word" th:field="*{word}" th:text="${game.word}"></label>
+    </div>
+
+</div>
+
+</form>
+<div>
+    <h3><a th:href="@{/results}" >Leader Board</a></h3>
+</div>
+
+</body>
+</html>

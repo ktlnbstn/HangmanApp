@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+
+<center><h1 th:text="${title}" style="padding-top:100px">Default Title</h1></center>
+
+<div th:replace="fragments :: page-header"></div>
+
+<div th:object="${resultsForm}" th:action="@{/results}"
+     modelAttribute="resultsForm" method="post" style="max-width:600px;">
+
+    <form method="post" style="max-width:600px;" th:object="${resultsForm}" commandName="resultsForm">
+
+        <label>Select A Difficulty Level: </label>
+
+        <select th:field="*{difficulty}">
+            <option th:value="11" >Top Scores</option>
+            <option th:value="1">1</option>
+            <option th:value="2">2</option>
+            <option th:value="3">3</option>
+            <option th:value="4">4</option>
+            <option th:value="5">5</option>
+            <option th:value="6">6</option>
+            <option th:value="7">7</option>
+            <option th:value="8">8</option>
+            <option th:value="9">9</option>
+            <option th:value="10">10</option>
+        </select>
+
+        <input type="hidden" name="resultsId" />
+        <input type="submit" value="Search" />
+
+    </form>
+
+    <p th:unless="${games} and ${games.size()}">No scores at this difficulty level yet.</p>
+
+    <table class="table" style="width:100%">
+
+        <tr>
+            <th>Name</th>
+            <th>Score</th>
+            <th>Difficulty</th>
+            <th>Word</th>
+        </tr>
+
+        <tr th:each="game : ${games}">
+            <td th:text="${game.playerName}"></td>
+            <td th:text="${game.score}"></td>
+            <td th:text="${game.difficulty}"></td>
+            <td th:text="${game.word}"></td>
+        </tr>
+
+
+    </table>
+</div>
+
+</body>
+</html>

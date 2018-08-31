@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https//www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+
+<center><h1 th:text="${title}" style="padding-top:100px">Default Title</h1></center>
+
+<div th:replace="fragments :: page-header"></div>
+
+<form action="#" th:action="@{/play}" th:object="${game}" modelAttribute="game" method="post" style="max-width:600px;">
+
+    <div class="form-group">
+        <label th:for="playerName">Player Name: </label>
+        <input class="input" th:field="*{playerName}" th:errorclass="error" />
+        <div th:if="${#fields.hasErrors('playerName')}" class="error" th:errors="*{playerName}">Incorrect Name</div>
+    </div>
+
+    <div class="form-group">
+        <label th:for="difficulty">Word Difficulty Level: </label>
+        <select th:field="*{difficulty}">
+            <option th:value="1">1</option>
+            <option th:value="2">2</option>
+            <option th:value="3">3</option>
+            <option th:value="4">4</option>
+            <option th:value="5">5</option>
+            <option th:value="6">6</option>
+            <option th:value="7">7</option>
+            <option th:value="8">8</option>
+            <option th:value="9">9</option>
+            <option th:value="10">10</option>
+        </select>
+    </div>
+
+    <input type="hidden" th:value="${game.id}" name="gameId" />
+    <input type="submit" value="Start your game!" />
+
+</form>
+
+</body>
+</html>

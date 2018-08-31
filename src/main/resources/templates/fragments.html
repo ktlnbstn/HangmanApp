@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https//www.thymeleaf.org/">
+<head th:fragment="head">
+    <meta charset="UTF-8"/>
+    <title th:text="${title}">Hangman Application</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+
+<div th:fragment="page-header" class="navbar navbar-inverse navbar-fixed-top" >
+
+    <div class="container">
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav" >
+                <li><a th:href="@{/play}">Home</a></li>
+                <li><a th:href="@{/results}" >Leader Board</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

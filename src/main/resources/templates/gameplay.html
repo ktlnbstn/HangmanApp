@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+
+<center><h1 th:text="${title}" style="padding-top:100px">Default Title</h1></center>
+
+<div th:replace="fragments :: page-header"></div>
+
+<form th:object="${game}" th:action="@{/gameplay/{gid}(gid=${game.id})}"
+      modelAttribute="game" method="post" style="max-width:600px;">
+
+    <div class="form-group">
+
+        <div>
+            <label>Player Name: </label>
+            <label th:for="playerName" th:field="*{playerName}" th:text="${game.playerName}"></label>
+        </div>
+
+        <div>
+            <label>Difficulty Level: </label>
+            <label th:for="difficulty" th:field="*{difficulty}" th:text="${game.difficulty}"></label>
+        </div>
+
+        <div>
+            <label th:for="tries">Guess a letter: </label>
+            <input class="input" th:name="tries" th:id="tries" />
+            <div th:if="${#fields.hasErrors('tries')}" class="error" th:errors="*{tries}">Incorrect Input</div>
+        </div>
+
+    </div>
+
+    <input type="hidden" th:value="${game.id}" name="gameId" />
+    <input type="submit" value="Guess a Letter!" />
+
+</form>
+
+<div >
+    <label> Word to Guess: </p></label>
+    <p th:text="${hiddenWord}"></p>
+</div>
+
+<div>
+
+    <div>
+        <label>Attempts Left: </label>
+        <div th:for="badTries" th:field="*{badTries}" th:text="${badTries}"></div>
+    </div>
+
+    <table class="table" style="width:100%">
+        <tr>
+            <th>Tried Letters: </th>
+        </tr>
+
+        <tr th:each="try : ${game.tries}">
+            <td th:text="${try}"></td>
+        </tr>
+
+    </table>
+</div>
+
+</body>
+</html>
