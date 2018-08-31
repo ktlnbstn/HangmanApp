@@ -3,8 +3,7 @@
 This application creates a Hangman game.
 
 TO RUN:
-- Open this [link](https://github.com/ktlnbstn/HangmanApp) to my HangManApp GitHub Repository.
-- Please download the ZIP file. Next, unzip the download.
+- Please download the HangmanApp ZIP file. Next, unzip the download.
 - Please download/install [IntelliJ](https://www.jetbrains.com/idea/download/) if necessary.
 - Please download/install [MAMP](https://www.mamp.info/en/downloads/) if necessary.
 - Open both programs.
@@ -17,7 +16,7 @@ TO RUN:
   - Application is live at http://localhost:8080/play
 
 TO PLAY:
-- Choose to play the Hangman game by entering a player name and desired difficulty level.
+- Choose to start playing the Hangman game, enter a player name and desired difficulty level. Click the submit button.
 - Players are given 6 wrong guesses before they lose.
 - Or check out the leader board, linked in the navigation bar.
 
@@ -32,3 +31,16 @@ EXTENSION MET:
 - Users choose their own difficulty level.
 - Score board is implemented.
 - Score board can display leaders based on difficulty level.
+
+
+THOUGHT PROCESS:
+- First I built up Spring Framework basics so I could display the application in a clean way. This involves lots of folder structures.
+- Then, I knew the hangman game is focused of a few pieces of very important logic. I placed those methods under a class called 'HangmanLogic.'
+- Next I focused on creating an object called 'Game'. This is the key object that holds all the useful info/getters/setters about the game when it is currently being played, and later when we want to compare scores. Comparing scores is also why I created a data access object for the game, under 'GameDAO'. This file allows me to reach into the database and pull out all or specific games.
+- Next, I created the service to grab the secret word from the REACH api. This logic is found in 'RestClientService'.
+- Then came controllers. I created 'AbstractController' to help temporarily persist details like the hidden word in it's underline form and the number of bad guesses. These are both pieces of information that don't need to be kept in a database for later. 
+- 'WordsController' is in charge of calling the REACH api service and transfering the chosen word from the back-end to the front-end.
+- The 'HangmanController' is where the meat of this project lies. This is where the front-end and the back-end of the application we see on localhost meet. Here, I do everything from grab methods from classes to preform tasks, grab info from the front-end to be able to persist it to the database, and grab info from the back-end/save it to the model/display it on the front-end. 'HangmanController' controls the logical flow of the game and it's rules as information is fed into it.
+
+
+
