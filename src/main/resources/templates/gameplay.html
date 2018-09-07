@@ -24,7 +24,7 @@
 
         <div>
             <label th:for="tries">Guess a letter: </label>
-            <input class="input" th:name="tries" th:id="tries" />
+            <input class="input" th:name="userInput" th:id="tries" />
             <div th:if="${#fields.hasErrors('tries')}" class="error" th:errors="*{tries}">Incorrect Input</div>
         </div>
 

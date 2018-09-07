@@ -1,3 +1,4 @@
+// KATE'S UPDATED HMController
 package org.ktlnbstn.hangmanapp.controllers;
 
 import org.ktlnbstn.hangmanapp.model.Game;
@@ -39,7 +40,7 @@ public class HangmanController extends AbstractController {
         HttpSession session = request.getSession();
 
         // grab a word for the game object
-        if(game.getWord().equals("")) {
+        if(game.getWord().isEmpty()) {
 
             // logic to grab words from API by difficulty level,
             // choose one randomly, then add it to game object
@@ -59,6 +60,7 @@ public class HangmanController extends AbstractController {
         String hiddenWord = HangmanLogic.createHiddenWord(game.getWord(), game.getTries());
 
         setHiddenWordInSession(session, hiddenWord);
+        setBadTryCountInSession(session, 0);
 
         model.addAttribute("title", "Play Hangman");
         model.addAttribute("game", game);
@@ -67,9 +69,9 @@ public class HangmanController extends AbstractController {
         return "gameplay";
     }
 
-        // process updated gameForm
+    // process updated gameForm
     @PostMapping("gameplay/{gameId}")
-    public String gameInPlayPosted(@PathVariable int gameId, @RequestParam String tries,
+    public String gameInPlayPosted(@PathVariable int gameId, @RequestParam String userInput,
                                    Model model, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
@@ -82,7 +84,7 @@ public class HangmanController extends AbstractController {
         Game game = getGameFromSession(session);
 
         // validate user input
-        if(!HangmanLogic.validateUserInput(tries, game.getTries())) {
+        if(!HangmanLogic.validateUserInput(userInput, game.getTries(), game.getWord())) {
 
             // generate the word as underlines
             String hiddenWord = HangmanLogic.createHiddenWord(game.getWord(), game.getTries());
@@ -97,16 +99,34 @@ public class HangmanController extends AbstractController {
 
         }
 
+//        // check if originalWord was guessed. Check guess move before HiddenWord logic
+        if(HangmanLogic.checkIfCompleteWord(game.getWord(), userInput)) {
+
+            // if so: return user score and results page for that difficulty
+            int score = HangmanLogic.calculateScore(game);
+            game.setScore(score);
+
+            // save game with updated score
+            setGameInSession(session, game);
+            gameDAO.save(game);
+
+            model.addAttribute("title", "Game Over - You Win");
+            model.addAttribute("game", game);
+
+            return "score";
+
+        }
+
         // generate the hiddenWord
         String hiddenWord = HangmanLogic.createHiddenWord(game.getWord(), game.getTries());
         setHiddenWordInSession(session, hiddenWord);
         System.out.println(game.getWord());
 
-        // check number of tries
-        int numberOfBadTries = HangmanLogic.countBadTries(game.getWord(), game.getTries());
-        setBadTryCountInSession(session, numberOfBadTries);
+        // check number of userInput
+        int numberOfBadTries = HangmanLogic.countBadTries(game.getWord(), userInput);
+        setBadTryCountInSession(session, (getBadTryCountInSession(session) + numberOfBadTries));
 
-        // check if originalWord is complete
+        // check if originalWord is complete. kept a copy here to catch after HiddenWord generated
         if(HangmanLogic.checkIfCompleteWord(game.getWord(), getHiddenWordInSession(session))) {
 
             // if so: return user score and results page for that difficulty
@@ -124,7 +144,7 @@ public class HangmanController extends AbstractController {
 
         }
 
-        // check number of tries
+        // check number of userInput
         if(numberOfBadTries >= 6) {
 
             // if so: return user score and the results page for that difficulty level
@@ -147,7 +167,7 @@ public class HangmanController extends AbstractController {
         model.addAttribute("title", "Play Hangman");
         model.addAttribute("game", game);
         model.addAttribute("hiddenWord", hiddenWord);
-        model.addAttribute("badTries", (6 - numberOfBadTries));
+        model.addAttribute("badTries", (6 - getBadTryCountInSession(session)));
 
         // persist game properties
         gameDAO.save(game);
@@ -186,4 +206,3 @@ public class HangmanController extends AbstractController {
     }
 
 }
-

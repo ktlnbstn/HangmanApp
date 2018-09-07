@@ -1,39 +1,45 @@
+//KATE'S UPDATED HMLogic
 package org.ktlnbstn.hangmanapp.model;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class HangmanLogic {
 
     // validate input, return true if
-    public static boolean validateUserInput(String character, List<String> triedChars) {
+    public static boolean validateUserInput(String userInput, List<String> triedChars, String originalWord) {
 
-        // check input is only 1 character
-        if (character.length() == 1) {
+        // turn input to lowercase
+        String lowerCaseCharacter = userInput.toLowerCase();
 
-            // turn input to lowercase
-            String lowerCaseCharacter = character.toLowerCase();
+        // check input is only 1 userInput
+        if (lowerCaseCharacter.length() == 1) {
 
             // check if input is a valid char
             char alphaChar = lowerCaseCharacter.charAt(0);
 
             if (alphaChar >= 'a' && alphaChar <= 'z') {
 
-                // else: check if input char is already present in triedChars
+                // else: check if input is already present in triedChars
                 if (triedChars.contains(lowerCaseCharacter)) {
 
                     // if so, char is already present. break and go back to game
                     return false;
                 } else {
 
-                    // else: input is not a repeat, add char to tries array
+                    // else: input is not a repeat, add string to triedChars
                     triedChars.add(lowerCaseCharacter);
                     return true;
                 }
             }
             return false;
+        } else {
+            // check if multi-char userInput is actual originalWord
+            if(originalWord.contains(lowerCaseCharacter)) {
+                triedChars.add(lowerCaseCharacter);
+                return true;
+            }
+            // false
+            triedChars.add(lowerCaseCharacter);
         }
         return false;
     }
@@ -43,27 +49,31 @@ public class HangmanLogic {
     public static String createHiddenWord(String originalWord, List<String> tries) {
 
         // turn tries into a char[]
-        String triesString = tries.toString().replaceAll(",", "");
-        char[] triesAsChars = triesString.substring(1, triesString.length()-1).replaceAll(" ", "").toCharArray();
+//        String triesString = tries.toString().replaceAll(",", "");
+//        char[] triesAsChars = triesString.substring(1, triesString.length()-1).replaceAll(" ", "").toCharArray();
 
         StringBuilder hiddenWord = new StringBuilder();
 
-        // if char in originalWord,
-        for (char c : originalWord.toCharArray()) {
+        // for each letter in originalWord,
+        for (String originalWordLetter : originalWord.split("")) {
 
             boolean isFound = false;
 
-            // if it matches a char in tries,
-            for (int i = 0; i < triesAsChars.length; i++) {
+            // if it matches a letter in tries,
+            for (String triesAttempt : tries) {
 
-                if (triesAsChars[i] == c) {
+                // if more than 1 letter, go to else, do not add to hiddenWordj
+                if (triesAttempt.length() == 1) {
 
-                    // add/reveal the char in the hiddenWord
-                    hiddenWord.append(Character.toString(c)).append(" ");
-                    isFound = true;
-                    break;
+                    // if the "string" letters match in originalWord and the triesAttempt
+                    if (originalWordLetter.equals(triesAttempt)) {
+
+                        // add/reveal the letter in the hiddenWord
+                        hiddenWord.append(triesAttempt).append(" ");
+                        isFound = true;
+                        break;
+                    }
                 }
-
             }
 
             if(!isFound) {
@@ -75,18 +85,20 @@ public class HangmanLogic {
         return hiddenWord.toString();
     }
 
-    public static int countBadTries(String originalWord, List<String> tries) {
+    public static int countBadTries(String originalWord, String userInput) {
 
-        // turn originalWord into unique char set
-        String[] originalWordIntoArray = originalWord.split("");
-        Set<String> originalWordIntoLetters = new HashSet<>(Arrays.asList(originalWordIntoArray));
         int badTries = 0;
 
-        // if char in originalWord,
-        for (String trie : tries) {
+        if(userInput.length() == 1) {
 
-            // if not present, a bad guess
-            if (!originalWordIntoLetters.contains(trie)) {
+            // if string (of size 1) in not in originalWord, add to badTries
+            if(!originalWord.contains(userInput)){
+                badTries++;
+
+            }
+        } else{
+            // if string is in originalWord, do not add to badTries
+            if (!originalWord.equals(userInput)) {
                 badTries++;
             }
         }
