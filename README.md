@@ -1,6 +1,6 @@
 # HangmanApp
 
-This application creates a Hangman game.
+This application creates a Hangman game. [Screenshots Here!](https://github.com/ktlnbstn/HangmanApp/blob/master/screenshots.md)
 
 TO RUN:
 - Please download the HangmanApp ZIP file. Next, unzip the download.
